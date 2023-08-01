@@ -1,24 +1,24 @@
 import React, { useState, useRef } from 'react';
 import Editor from '@monaco-editor/react';
 
-const CodeEditorWindow = ({ onChange, language, theme }) => {
-
+const CodeEditorWindow = ({ onChange, language, theme, defaultCode }) => {
   const [value, setValue] = useState('');
 
   const handleEditorChange = (v, event) => {
     setValue(v);
     onChange('code', v);
   };
-  
+
   return (
-    <div className="overflow-hidden w-full h-full shadow-2xl rounded-md overlay">
+    <div className="overflow-hidden w-full h-full rounded-md">
       <Editor
         height="85vh"
         width="{`100%`}"
         language={language || 'python'}
-        value={value}
+        value={value || defaultCode}
         theme={theme}
-        defaultValue="# Write code"
+        saveViewState={false}
+        options={{ scrollbar: { vertical: 'hidden',horizontal: 'hidden' }}}
         onChange={handleEditorChange}
       />
     </div>

@@ -15,9 +15,10 @@ const Landing = () => {
   const [customInput, setCustomInput] = useState('');
   const [outputDetails, setOutputDetails] = useState(null);
   const [processing, setProcessing] = useState(null);
+  // console.log(customInput)
 
   const onSelectChange = (sl) => {
-    console.log('selected language', sl);
+    // console.log('selected language', sl);
     setLanguage(sl);
   };
 
@@ -84,7 +85,7 @@ const Landing = () => {
     };
     try {
       const response = await axios.request(options);
-      console.log(atob(response.data.stdout))
+      // console.log(atob(response.data.stdout))
       const statusId = response.data.status?.id;
 
       if (statusId === 1 || statusId === 2) {
@@ -94,10 +95,10 @@ const Landing = () => {
         }, 2000);
 
       } else {
-         setProcessing(false);
-         setOutputDetails(response.data);
-         return;
-       }
+        setProcessing(false);
+        setOutputDetails(response.data);
+        return;
+      }
     } catch (err) {
       console.log('err', err);
       setProcessing(false);
@@ -107,46 +108,50 @@ const Landing = () => {
 
   return (
     <>
-      <div className=" flex flex-row border-2 border-black">
-        <div className="px-4 pt-2">
+      <div className='flex flex-row justify-between px-4 py-6'>
 
-          <LanguagesDropdown onSelectChange={onSelectChange} />
+        <div className=" w-[50%] flex flex-row justify-between">
+          <div className=''>
+            <LanguagesDropdown onSelectChange={onSelectChange} />
+          </div>
+          {/* RUN button */}
+          <div className="pr-6">
+            <button
+              onClick={handleCompile}
+              disabled={!code && !processing}
+              className={`h-full w-28 cursor-pointer py-[6px] px-[16px] bg-[#0556f3] text-[14px] leading-5 text-white border-none outline-none rounded-[10px] z-10 font-bold flex-shrink-0 ${!code ? 'opacity-50' : ''
+                }`}
+            >
+              {processing ? 'Processing...' : 'Run'}
+            </button>
+          </div>
         </div>
-        {/* RUN button */}
-        <div className="px-4 py-2">
-          <button
-            onClick={handleCompile}
-            disabled={!code && !processing}
-            className={`cursor-pointer py-[6px] px-[16px] bg-[#0556f3] text-[14px] leading-5 text-white border-none outline-none rounded-sm z-10 font-bold flex-shrink-0 ${!code ? 'opacity-50' : ''
-              }`}
-          >
-            {processing ? 'Processing...' : 'Run'}
-          </button>
+        {/* Memory and Time */}
+        <div className='w-[49%] flex '>
+          <OutputDetails outputDetails={outputDetails} />
+
         </div>
+
       </div>
-
       {/* Editor */}
-      <div className="flex flex-row space-x-4 items-start px-2 py-4">
-        <div className="flex flex-col w-[70%] h-full justify-start items-end py-2 border-[#aca] border-2">
+      <div className="h-[calc(100vh-86px)] flex flex-row items-start ">
+        <div className="flex flex-col w-[50%] h-full justify-start items-end py-2 border-r border-t border-solid border-[#d3dce6]">
           <CodeEditorWindow
             onChange={onChange}
             language={language?.value}
             theme={theme}
+            defaultCode={language?.defaultCode}
           />
         </div>
 
 
-        {/* // Output window, input window and other detail box */}
-        <div className=" right-container flex flex-shrink-0 w-[30%] flex-col">
+        {/* // Output window and input window */}
+        <div className=" h-full right-container flex flex-shrink-0 w-[49.7%] flex-col space-y-2 items-center">
           <OutputWindow outputDetails={outputDetails} />
-          <div className="flex flex-col items-end">
-            <CustomInput
-              customInput={customInput}
-              setCustomInput={setCustomInput}
-            />
-
-          </div>
-          {outputDetails && <OutputDetails outputDetails={outputDetails} />}
+          <CustomInput
+            customInput={customInput}
+            setCustomInput={setCustomInput}
+          />
         </div>
       </div>
     </>
