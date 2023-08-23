@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const OutputDetails = ({ outputDetails }) => {
   // console.log(outputDetails)
@@ -12,14 +12,16 @@ const OutputDetails = ({ outputDetails }) => {
       </p> */}
       <p className="text-base  w-36 text-left">
         Memory:
-        <span className="font-semibold mx-2 ">
-          {outputDetails?.memory}
+        <span className="font-semibold mx-2 ">{outputDetails?.memory}</span>
+        <span className="text-xs -ml-[6px] text-[#000000c7] font-semibold">
+          {outputDetails?.memory && "kb"}
         </span>
       </p>
       <p className=" text-base  w-36 text-left">
-        Time: 
-        <span className="font-semibold mx-2 ">
-          {outputDetails?.time}
+        Time:
+        <span className="font-semibold mx-2 ">{outputDetails?.time}</span>
+        <span className="text-xs -ml-[6px] text-[#000000c7] font-semibold">
+          {outputDetails?.time && "s"}
         </span>
       </p>
     </div>
